@@ -59,7 +59,7 @@ const MinerLabel = ({ miner }: { miner: `0x${string}` }) => {
       <TooltipProvider delayDuration={300}>
         <Tooltip>
           <TooltipTrigger>
-            <Link to={`/adress/${miner}`}>{formatHash(miner)}</Link>
+            <Link to={`/address/${miner}`}>{formatHash(miner)}</Link>
           </TooltipTrigger>
           <TooltipContent>
             <p>{miner}</p>
