@@ -37,7 +37,7 @@ export function formatRelativeTime(timestamp: number) {
 
 export function formatHash(hash: string) {
   const firstBlock = hash.slice(0, 10);
-  const lastBlock = hash.slice(hash.length - 9, hash.length - 1);
+  const lastBlock = hash.slice(hash.length - 9, hash.length);
 
   return firstBlock + '...' + lastBlock;
 }

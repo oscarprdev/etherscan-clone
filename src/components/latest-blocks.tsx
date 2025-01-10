@@ -8,7 +8,7 @@ import { config } from '~/config';
 const BLOCKS_PER_SCREEN = 6;
 
 const LatestBlocks = () => {
-  const { data, isFetching } = useQuery({
+  const { data } = useQuery({
     queryKey: ['latestBlocks'],
     queryFn: async () => {
       const latestBlock = await getBlockNumber(config);
@@ -47,8 +47,6 @@ const LatestBlocks = () => {
             <MoveRight size={18} />
           </Link>
         </>
-      ) : isFetching ? (
-        <p>Fetching...</p>
       ) : (
         <p>No data</p>
       )}

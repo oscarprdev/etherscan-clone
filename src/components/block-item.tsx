@@ -1,9 +1,10 @@
+import EtherBadge from './ether-badge';
 import Link from './ui/link';
 import { Box } from 'lucide-react';
 import { useMemo } from 'react';
 import { type Block } from 'viem';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
-import { formatEth, formatHash, formatRelativeTime, getBlockReward } from '~/lib/utils';
+import { Tooltip, TooltipWithLabel } from '~/components/ui/tooltip';
+import { formatHash, formatRelativeTime, getBlockReward } from '~/lib/utils';
 
 type BlockItemProps = Pick<
   Block<bigint, true>,
@@ -40,82 +41,23 @@ const BlockItem = (props: BlockItemProps) => {
       </div>
       <div className="flex w-full flex-col items-start justify-between sm:flex-row sm:items-center">
         <div className="flex flex-col items-start">
-          <MinerLabel miner={miner} />
+          <TooltipWithLabel label="Miner" content={miner}>
+            <Link to={`/address/${miner}`}>{formatHash(miner)}</Link>
+          </TooltipWithLabel>
           <div className="flex items-center gap-2">
-            <TransactionsCounter block={number} trLength={transactions.length} />
-            <MobileBlockRewardBadge blockReward={blockReward} />
+            <Tooltip content="Transactions in this block">
+              <Link to={`txs?block=${number}`}>{transactions.length} txns</Link>
+            </Tooltip>
+            <EtherBadge
+              ether={blockReward}
+              tooltipContent="Block reward"
+              className="block sm:hidden"
+            />
           </div>
         </div>
-        <DesktopBlockRewardBadge blockReward={blockReward} />
+        <EtherBadge ether={blockReward} tooltipContent="Block reward" className="hidden sm:block" />
       </div>
     </article>
-  );
-};
-
-const MinerLabel = ({ miner }: { miner: `0x${string}` }) => {
-  return (
-    <label className="flex gap-1">
-      <p className="font-medium text-stone-900">Miner</p>
-      <TooltipProvider delayDuration={300}>
-        <Tooltip>
-          <TooltipTrigger>
-            <Link to={`/address/${miner}`}>{formatHash(miner)}</Link>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{miner}</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    </label>
-  );
-};
-
-const TransactionsCounter = ({ block, trLength }: { block: bigint | null; trLength: number }) => {
-  return (
-    <TooltipProvider delayDuration={300}>
-      <Tooltip>
-        <TooltipTrigger>
-          <Link to={`txs?block=${block}`}>{trLength} txns</Link>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">
-          <p>Transactions in this block</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-};
-
-const MobileBlockRewardBadge = ({ blockReward }: { blockReward: number }) => {
-  return (
-    <TooltipProvider delayDuration={300}>
-      <Tooltip>
-        <TooltipTrigger>
-          <span className="block rounded-md border p-1 text-[0.73em] text-xs font-bold sm:hidden">
-            {formatEth(blockReward)} Eth
-          </span>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Block reward</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-};
-
-const DesktopBlockRewardBadge = ({ blockReward }: { blockReward: number }) => {
-  return (
-    <TooltipProvider delayDuration={300}>
-      <Tooltip>
-        <TooltipTrigger>
-          <span className="hidden rounded-md border p-2 text-[0.73em] text-xs font-bold sm:block">
-            {formatEth(blockReward)} Eth
-          </span>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Block reward</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
   );
 };
 

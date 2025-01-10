@@ -4,7 +4,7 @@ import { cn } from '~/lib/utils';
 
 const TooltipProvider = TooltipPrimitive.Provider;
 
-const Tooltip = TooltipPrimitive.Root;
+const CnTooltip = TooltipPrimitive.Root;
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
@@ -26,4 +26,37 @@ const TooltipContent = React.forwardRef<
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+const Tooltip = ({ content, children }: React.PropsWithChildren<{ content: string }>) => {
+  return (
+    <TooltipProvider delayDuration={300}>
+      <CnTooltip>
+        <TooltipTrigger>{children}</TooltipTrigger>
+        <TooltipContent side="bottom">
+          <p className="text-xs text-white">{content}</p>
+        </TooltipContent>
+      </CnTooltip>
+    </TooltipProvider>
+  );
+};
+
+const TooltipWithLabel = ({
+  content,
+  label,
+  children,
+}: React.PropsWithChildren<{ content: string; label: string }>) => {
+  return (
+    <label className="flex gap-1">
+      <p className="font-medium text-stone-900">{label}</p>
+      <TooltipProvider delayDuration={300}>
+        <CnTooltip>
+          <TooltipTrigger>{children}</TooltipTrigger>
+          <TooltipContent>
+            <p className="text-xs text-white">{content}</p>
+          </TooltipContent>
+        </CnTooltip>
+      </TooltipProvider>
+    </label>
+  );
+};
+
+export { Tooltip, TooltipWithLabel, CnTooltip, TooltipTrigger, TooltipContent, TooltipProvider };
