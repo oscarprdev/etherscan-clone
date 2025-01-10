@@ -1,19 +1,22 @@
-import { Suspense, lazy } from 'react';
-
-const LatestBlocks = lazy(() => import('~/components/latest-blocks.tsx'));
-const LatestTransactions = lazy(() => import('~/components/latest-transactions.tsx'));
+import LatestBlocks from '~/components/latest-blocks';
+import LatestTransactions from '~/components/latest-transactions';
 
 const Home = () => {
   return (
     <main className="flex w-screen flex-col px-5 sm:px-10">
       <section className="mt-20 flex w-full flex-col items-start gap-4 lg:flex-row">
-        <Suspense fallback={<p>Loading...</p>}>
+        <section className="w-full rounded-lg border border-border shadow-lg">
+          <div className="border-b px-5 py-5">
+            <p className="text-sm font-semibold">Latest blocks</p>
+          </div>
           <LatestBlocks />
-        </Suspense>
-
-        <Suspense fallback={<p>Loading...</p>}>
+        </section>
+        <section className="w-full rounded-lg border border-border shadow-lg">
+          <div className="border-b px-5 py-5">
+            <p className="text-sm font-semibold">Latest transactions</p>
+          </div>
           <LatestTransactions />
-        </Suspense>
+        </section>
       </section>
     </main>
   );

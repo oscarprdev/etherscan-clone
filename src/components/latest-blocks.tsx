@@ -8,7 +8,7 @@ import { config } from '~/config';
 const BLOCKS_PER_SCREEN = 6;
 
 const LatestBlocks = () => {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['latestBlocks'],
     queryFn: async () => {
       const latestBlock = await getBlockNumber(config);
@@ -20,12 +20,11 @@ const LatestBlocks = () => {
     },
   });
 
+  if (isLoading) return <p>Loading...</p>;
+
   return (
-    <section className="w-full rounded-lg border border-border shadow-lg">
-      <div className="border-b px-5 py-5">
-        <p className="text-sm font-semibold">Latest blocks</p>
-      </div>
-      {data && data.length > 0 ? (
+    <>
+      {data && data.length > 0 && (
         <>
           <div className="flex w-full flex-col px-5">
             {data.map(block => (
@@ -47,10 +46,8 @@ const LatestBlocks = () => {
             <MoveRight size={18} />
           </Link>
         </>
-      ) : (
-        <p>No data</p>
       )}
-    </section>
+    </>
   );
 };
 

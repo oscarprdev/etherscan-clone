@@ -8,7 +8,7 @@ import { config } from '~/config';
 const TX_PER_SCREEN = 6;
 
 const LatestTransactions = () => {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['latestTransactions'],
     queryFn: async () => {
       const latestBlock = await getBlockNumber(config);
@@ -20,11 +20,10 @@ const LatestTransactions = () => {
     },
   });
 
+  if (isLoading) return <p>Loading...</p>;
+
   return (
-    <section className="w-full rounded-lg border border-border shadow-lg">
-      <div className="border-b px-5 py-5">
-        <p className="text-sm font-semibold">Latest transactions</p>
-      </div>
+    <>
       {data && data.length > 0 && (
         <>
           <div className="flex w-full flex-col px-5">
@@ -47,7 +46,7 @@ const LatestTransactions = () => {
           </Link>
         </>
       )}
-    </section>
+    </>
   );
 };
 
