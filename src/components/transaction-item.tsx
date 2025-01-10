@@ -27,7 +27,7 @@ const TransactionItem = (props: TransaactionItemProps) => {
           <Suspense fallback={'-'}>{blockHash && <TxTimestamp blockHash={blockHash} />}</Suspense>
         </div>
       </div>
-      <div className="ml-10 flex w-full flex-col items-start justify-between sm:flex-row sm:items-center">
+      <div className="flex w-full flex-col items-start justify-between sm:ml-10 sm:flex-row sm:items-center">
         <div className="flex flex-col items-start">
           <TooltipWithLabel label="From" content={from}>
             <Link to={`/address/${from}`}>{formatHash(from)}</Link>

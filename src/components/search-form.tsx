@@ -67,7 +67,7 @@ const SearchForm = () => {
         onSubmit={handleSubmit}
         className="flex w-full items-center gap-2 rounded-lg bg-white p-1 shadow-md">
         <Select>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="hidden w-[180px] sm:flex">
             <SelectValue placeholder="All Filters" onChange={handleFilterChange} />
           </SelectTrigger>
           <SelectContent>
