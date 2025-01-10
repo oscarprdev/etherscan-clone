@@ -1,3 +1,4 @@
+import Header from './components/header';
 import BlockDetail from './layout/block-detail';
 import Home from './layout/home';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -11,6 +12,7 @@ function App() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
+        <Header />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
