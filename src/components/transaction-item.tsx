@@ -21,11 +21,13 @@ const TransactionItem = (props: TransaactionItemProps) => {
         </span>
         <p className="visible sm:hidden">TX#</p>
         <div className="flex items-center gap-2 sm:flex-col sm:items-start sm:gap-0">
-          <Link to={`/block/${hash}`}>{String(hash).slice(0, 10)}...</Link>
+          <Link to={`/block/${hash}`} className="max-w-24 truncate">
+            {String(hash)}
+          </Link>
           <Suspense fallback={'-'}>{blockHash && <TxTimestamp blockHash={blockHash} />}</Suspense>
         </div>
       </div>
-      <div className="flex w-full flex-col items-start justify-between sm:flex-row sm:items-center">
+      <div className="ml-10 flex w-full flex-col items-start justify-between sm:flex-row sm:items-center">
         <div className="flex flex-col items-start">
           <TooltipWithLabel label="From" content={from}>
             <Link to={`/address/${from}`}>{formatHash(from)}</Link>

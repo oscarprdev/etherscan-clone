@@ -39,7 +39,7 @@ const BlockItem = (props: BlockItemProps) => {
           <p className="text-xs text-stone-500">{formatRelativeTime(Number(timestamp))}</p>
         </div>
       </div>
-      <div className="flex w-full flex-col items-start justify-between sm:flex-row sm:items-center">
+      <div className="ml-5 flex w-full flex-col items-start justify-between sm:flex-row sm:items-center">
         <div className="flex flex-col items-start">
           <TooltipWithLabel label="Miner" content={miner}>
             <Link to={`/address/${miner}`}>{formatHash(miner)}</Link>
