@@ -1,6 +1,6 @@
 import { BINANCE_API_URL } from '~/constants';
 
-export const getEtherPercentage = async () => {
+export const getEtherPercentage = async (): Promise<number> => {
   const response = await fetch(
     `${BINANCE_API_URL}/api/v3/klines?symbol=ETHUSDT&interval=1h&limit=2`
   );
