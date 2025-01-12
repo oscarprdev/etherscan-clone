@@ -30,6 +30,7 @@ const EtherInfoCard = () => {
 
           <div className="flex w-full flex-col items-start gap-2 md:border-r md:px-5">
             <TotalEthTransactions />
+            <span className="h-[0.1rem] w-full bg-gray-100"></span>
             <LatestBlocks />
           </div>
         </div>
@@ -81,34 +82,6 @@ const LatestBlocks = () => {
 };
 
 const TotalEthTransactions = () => {
-  const totalEthTx = useQuery({
-    queryKey: ['total-eth-tx'],
-    queryFn: async (): Promise<number> => {
-      const latestBlock = await getBlock(config);
-      const latestBlockNumber = Number(latestBlock.number);
-      const currentLatestBlock = localStorage.getItem('currentLatestBlock');
-      if (!currentLatestBlock) {
-        localStorage.setItem('currentLatestBlock', String(latestBlockNumber));
-      }
-
-      let totalAmountTx = Number(localStorage.getItem('totalAmountTx'));
-      if (!totalAmountTx) {
-        totalAmountTx = DEFAULT_TOTAL_AMOUNT_TX;
-      }
-      for (let i = latestBlockNumber; i > Number(currentLatestBlock); i--) {
-        if (i === Number(currentLatestBlock)) break;
-
-        const newBlock = await getBlock(config, { blockNumber: BigInt(i) });
-        totalAmountTx += newBlock.transactions.length;
-      }
-
-      localStorage.setItem('totalAmountTx', String(totalAmountTx));
-      localStorage.setItem('currentLatestBlock', String(latestBlockNumber));
-
-      return totalAmountTx;
-    },
-  });
-
   const medGasPrice = useQuery({
     queryKey: ['medGasPrice'],
     queryFn: async (): Promise<number> => {
@@ -127,11 +100,6 @@ const TotalEthTransactions = () => {
     },
   });
 
-  const totalAmountTx = useMemo(
-    () => (Number(totalEthTx.data) / 1_000_000).toFixed(2),
-    [totalEthTx.data]
-  );
-
   return (
     <div className="ml-1 flex w-full items-center justify-between gap-2">
       <div className="flex flex-1 items-center gap-2">
@@ -140,12 +108,10 @@ const TotalEthTransactions = () => {
           <p className="text-xs uppercase text-stone-500">Transactions</p>
           <Tooltip content="Total transactions" side="top">
             <p className="font-semibold text-stone-950">
-              {totalAmountTx && !isNaN(Number(totalAmountTx))
-                ? Number(totalAmountTx).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                : '-'}
+              {Number(DEFAULT_TOTAL_AMOUNT_TX.toFixed(2)).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
               M
             </p>
           </Tooltip>
