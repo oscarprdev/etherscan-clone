@@ -30,6 +30,12 @@ export function formatRelativeTime(timestamp: number) {
   } else if (diffInSeconds < 3600) {
     const diffInMinutes = Math.floor(diffInSeconds / 60);
     return `${diffInMinutes} min ago`;
+  } else if (diffInSeconds < 86400) {
+    const diffInHours = Math.floor(diffInSeconds / 3600);
+    return diffInHours === 1 ? 'an hour ago' : `${diffInHours} hours ago`;
+  } else if (diffInSeconds < 2592000) {
+    const diffInDays = Math.floor(diffInSeconds / 86400);
+    return diffInDays === 1 ? 'yesterday' : `${diffInDays} days ago`;
   } else {
     return '-';
   }

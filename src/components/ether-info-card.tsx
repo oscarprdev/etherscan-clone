@@ -1,3 +1,4 @@
+import TransactionsChart from './transactions-chart';
 import Link from './ui/link';
 import { Tooltip } from './ui/tooltip';
 import { useQuery } from '@tanstack/react-query';
@@ -26,15 +27,17 @@ const EtherInfoCard = () => {
             {data && <EtherPrice ethPrice={Number(data.price)} />}
             <span className="h-[0.1rem] w-full bg-gray-100"></span>
             {data && <EtherMarketCap ethPrice={Number(data.price)} />}
+            <span className="block h-[0.1rem] w-full bg-gray-100 lg:hidden"></span>
           </div>
 
-          <div className="flex w-full flex-col items-start gap-2 md:border-r md:px-5">
+          <div className="mt-3 flex w-full flex-col items-start gap-2 md:border-r md:px-5 lg:mt-0">
             <TotalEthTransactions />
             <span className="h-[0.1rem] w-full bg-gray-100"></span>
             <LatestBlocks />
+            <span className="block h-[0.1rem] w-full bg-gray-100 lg:hidden"></span>
           </div>
         </div>
-        <div className="grid w-full place-items-center">chart</div>
+        <TransactionsChart />
       </article>
     </div>
   );
