@@ -67,7 +67,7 @@ const TransactionsChart = () => {
 
     const margin = { top: 10, right: 20, bottom: 11, left: 20 };
     const width = chartWidth - margin.left - margin.right;
-    const height = 100 - margin.top - margin.bottom;
+    const height = 70 - margin.top - margin.bottom;
 
     // Clear previous graph
     d3.select(graphRef.current).select('svg').remove();
@@ -146,7 +146,7 @@ const TransactionsChart = () => {
   }, [txHistory, chartWidth]);
 
   return (
-    <section className="-mr-5 mt-3 w-full lg:mt-0 lg:px-5">
+    <section className="-mr-5 mt-3 w-full py-2 lg:mt-0 lg:w-2/3 lg:px-5">
       <p className="text-xs uppercase text-stone-500">Transactions history in 2 days</p>
       <div className="w-full" ref={graphRef}></div>
     </section>

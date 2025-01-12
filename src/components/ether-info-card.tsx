@@ -14,31 +14,37 @@ import { getEtherPercentage } from '~/services/get-ether-percentage';
 import { GetEtherPriceOutput, getEtherPrice } from '~/services/get-ether-price';
 
 const EtherInfoCard = () => {
+  return (
+    <div className="-mt-16 w-screen p-5 sm:p-10">
+      <article className="flex flex-col items-center justify-between rounded-lg border border-border bg-white p-2 px-5 shadow-md lg:flex-row">
+        <EtherInfo />
+        <TransactionsChart />
+      </article>
+    </div>
+  );
+};
+
+const EtherInfo = () => {
   const { data } = useQuery({
     queryKey: ['ether-price'],
     queryFn: async (): Promise<GetEtherPriceOutput> => await getEtherPrice(),
   });
 
   return (
-    <div className="-mt-16 w-screen p-5 sm:p-10">
-      <article className="flex flex-col items-center justify-between rounded-lg border border-border bg-white p-5 shadow-md lg:flex-row">
-        <div className="flex w-full flex-col items-center justify-between md:flex-row">
-          <div className="flex w-full flex-col items-start gap-2 md:border-r md:pr-5">
-            {data && <EtherPrice ethPrice={Number(data.price)} />}
-            <span className="h-[0.1rem] w-full bg-gray-100"></span>
-            {data && <EtherMarketCap ethPrice={Number(data.price)} />}
-            <span className="block h-[0.1rem] w-full bg-gray-100 lg:hidden"></span>
-          </div>
+    <div className="flex w-full flex-col items-center justify-between md:flex-row">
+      <div className="flex w-full flex-col items-start gap-2 md:border-r md:pr-5">
+        {data && <EtherPrice ethPrice={Number(data.price)} />}
+        <span className="h-[0.1rem] w-full bg-gray-100"></span>
+        {data && <EtherMarketCap ethPrice={Number(data.price)} />}
+        <span className="block h-[0.1rem] w-full bg-gray-100 lg:hidden"></span>
+      </div>
 
-          <div className="mt-3 flex w-full flex-col items-start gap-2 md:border-r md:px-5 lg:mt-0">
-            <TotalEthTransactions />
-            <span className="h-[0.1rem] w-full bg-gray-100"></span>
-            <LatestBlocks />
-            <span className="block h-[0.1rem] w-full bg-gray-100 lg:hidden"></span>
-          </div>
-        </div>
-        <TransactionsChart />
-      </article>
+      <div className="mt-3 flex w-full flex-col items-start gap-2 md:border-r md:px-5 lg:mt-0">
+        <TotalEthTransactions />
+        <span className="h-[0.1rem] w-full bg-gray-100"></span>
+        <LatestBlocks />
+        <span className="block h-[0.1rem] w-full bg-gray-100 lg:hidden"></span>
+      </div>
     </div>
   );
 };
