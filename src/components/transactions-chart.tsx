@@ -8,7 +8,7 @@ import { formatRelativeTime } from '~/lib/utils';
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const TransactionsChart = () => {
-  const graphRef = useRef();
+  const graphRef = useRef<HTMLDivElement | null>(null);
   const [chartWidth, setChartWidth] = useState<number>(0);
 
   const txHistory = useQuery({
@@ -84,12 +84,12 @@ const TransactionsChart = () => {
     // Parse and scale the data
     const xScale = d3
       .scaleTime()
-      .domain(d3.extent(data, d => new Date(d.timestamp * 1000)))
+      .domain(d3.extent(data, d => new Date(d.timestamp * 1000)) as [Date, Date])
       .range([0, width]);
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(data, d => d.tx)])
+      .domain([0, d3.max(data, d => d.tx) ?? 0])
       .range([height, 0]);
 
     // Add the X-axis
@@ -100,14 +100,14 @@ const TransactionsChart = () => {
         d3
           .axisBottom(xScale)
           .tickValues([
-            new Date(d3.min(data, d => d.timestamp * 1000)),
+            new Date(d3.min(data, d => d.timestamp * 1000) ?? 0),
             new Date(data[data.length - 1].timestamp * 1000),
           ])
-          .tickFormat(d => formatRelativeTime(d.getTime() / 1000))
+          .tickFormat(d => formatRelativeTime((d as Date).getTime() / 1000))
           .tickSize(0)
       )
       .selectAll('text')
-      .each(function (d, i) {
+      .each(function (_, i) {
         if (i === 0) {
           d3.select(this).attr('transform', 'translate(30, 0)');
         }
@@ -121,7 +121,7 @@ const TransactionsChart = () => {
     svg.append('g').call(
       d3
         .axisLeft(yScale)
-        .tickValues([0, d3.max(data, d => d.tx)])
+        .tickValues([0, d3.max(data, d => d.tx) ?? 0])
         .tickSize(0)
     );
 
@@ -130,7 +130,7 @@ const TransactionsChart = () => {
 
     // Add a line connecting the points
     const line = d3
-      .line()
+      .line<{ block: number; tx: number; timestamp: number }>()
       .x(d => xScale(new Date(d.timestamp * 1000)))
       .y(d => yScale(d.tx))
       .curve(d3.curveMonotoneX);
