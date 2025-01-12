@@ -15,7 +15,7 @@ const Home = () => {
         </div>
       </section>
       <EtherInfoCard />
-      <section className="mt-20 flex w-full flex-col items-start gap-4 px-5 sm:px-10 lg:flex-row">
+      <section className="flex w-full flex-col items-start gap-4 px-5 sm:px-10 lg:flex-row">
         <section className="w-full rounded-lg border border-border shadow-lg">
           <div className="border-b px-5 py-5">
             <p className="text-sm font-semibold">Latest blocks</p>
