@@ -67,7 +67,7 @@ const TransactionsChart = () => {
 
     const margin = { top: 10, right: 20, bottom: 11, left: 20 };
     const width = chartWidth - margin.left - margin.right;
-    const height = 120 - margin.top - margin.bottom;
+    const height = 90 - margin.top - margin.bottom;
 
     // Clear previous graph
     d3.select(graphRef.current).select('svg').remove();
