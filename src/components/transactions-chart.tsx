@@ -146,8 +146,9 @@ const TransactionsChart = () => {
   }, [txHistory, chartWidth]);
 
   return (
-    <section className="-mr-5 mt-3 w-full py-2 lg:mt-0 lg:w-2/3 lg:px-5">
+    <section className="-mr-5 mt-3 min-h-[120px] w-full py-2 lg:mt-0 lg:w-2/3 lg:px-5">
       <p className="text-xs uppercase text-stone-500">Transactions history in 2 days</p>
+      {txHistory.isLoading && <p className="text-xs text-stone-500">Loading...</p>}
       <div className="w-full" ref={graphRef}></div>
     </section>
   );
