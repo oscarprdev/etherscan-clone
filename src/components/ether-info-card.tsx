@@ -32,14 +32,14 @@ const EtherInfo = () => {
 
   return (
     <div className="flex w-full flex-col items-center justify-between md:flex-row">
-      <div className="flex w-full flex-col items-start gap-2 md:border-r md:pr-5">
+      <div className="flex h-[120px] w-full flex-col items-start gap-2 md:border-r md:pr-5">
         {data && <EtherPrice ethPrice={Number(data.price)} />}
         <span className="h-[0.1rem] w-full bg-gray-100"></span>
         {data && <EtherMarketCap ethPrice={Number(data.price)} />}
         <span className="block h-[0.1rem] w-full bg-gray-100 lg:hidden"></span>
       </div>
 
-      <div className="mt-3 flex w-full flex-col items-start gap-2 md:border-r md:px-5 lg:mt-0">
+      <div className="mt-3 flex h-[120px] w-full flex-col items-start gap-2 md:border-r md:px-5 lg:mt-0">
         <TotalEthTransactions />
         <span className="h-[0.1rem] w-full bg-gray-100"></span>
         <LatestBlocks />
@@ -70,7 +70,7 @@ const LatestBlocks = () => {
   const safeBlock = useMemo(() => data?.[1], [data]);
 
   return (
-    <div className="ml-1 flex w-full items-center justify-between gap-2">
+    <div className="ml-1 flex h-[80px] w-full items-center justify-between gap-2">
       <div className="flex flex-1 items-center gap-2">
         <CircleGauge size={20} />
         <div className="flex flex-col items-start text-xs">
@@ -110,7 +110,7 @@ const TotalEthTransactions = () => {
   });
 
   return (
-    <div className="ml-1 flex w-full items-center justify-between gap-2">
+    <div className="ml-1 flex h-[80px] w-full items-center justify-between gap-2">
       <div className="flex flex-1 items-center gap-2">
         <ArrowLeftRight size={20} />
         <div className="flex flex-col items-start text-xs">
@@ -144,7 +144,7 @@ const EtherMarketCap = ({ ethPrice }: { ethPrice: number }) => {
   const marketCap = useMemo(() => ethPrice * ETH_SUPPLY, [ethPrice]);
 
   return (
-    <div className="ml-1 flex items-center gap-2">
+    <div className="ml-1 flex h-[80px] items-center gap-2">
       <Globe size={20} />
       <div className="flex flex-col text-xs">
         <p className="text-xs uppercase text-stone-500">Market cap</p>
@@ -173,7 +173,7 @@ const EtherPrice = ({ ethPrice }: { ethPrice: number }) => {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div className="flex w-full items-center gap-2">
+    <div className="flex h-[80px] w-full items-center gap-2">
       <img
         src="https://etherscan.io/images/svg/brands/ethereum-original.svg"
         alt="ethereum logo"
