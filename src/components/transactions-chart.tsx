@@ -137,6 +137,7 @@ const TransactionsChart = () => {
 
     const modifiedData = data.slice(1, data.length);
 
+    // Add a line connecting the points
     svg
       .append('path')
       .datum(modifiedData)
