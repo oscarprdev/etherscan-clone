@@ -5,15 +5,21 @@ import { PropsWithChildren, ReactNode, useMemo } from 'react';
 import { useParams } from 'react-router';
 import { getBlockQueryKey } from 'wagmi/query';
 import { Badge } from '~/components/ui/badge';
+import Link from '~/components/ui/link';
 import { Tooltip } from '~/components/ui/tooltip';
 import { config } from '~/config';
-import { formatRelativeTime } from '~/lib/utils';
+import { cn, formatHash, formatRelativeTime, getBlockReward } from '~/lib/utils';
 
 const BlockDetail = () => {
   const { id } = useParams();
+
   const block = useQuery({
     queryKey: ['block'],
-    queryFn: async () => await getBlock(config, { blockNumber: id ? BigInt(id) : undefined }),
+    queryFn: async () =>
+      await getBlock(config, {
+        blockNumber: id ? BigInt(id) : undefined,
+        includeTransactions: true,
+      }),
   });
 
   const blockStates = useQuery({
@@ -25,6 +31,35 @@ const BlockDetail = () => {
         getBlock(config, { blockTag: 'pending' }),
       ]),
   });
+
+  const blockReward = useMemo(() => {
+    if (block.data === undefined) return 0;
+
+    return getBlockReward(
+      block.data.baseFeePerGas,
+      block.data.gasUsed,
+      block.data.transactions.map(tr => ({
+        gas: tr.gas,
+        gasPrice: tr.gasPrice,
+      }))
+    );
+  }, [block.data]);
+
+  const gasPercentage = useMemo(() => {
+    if (block.data === undefined) return 0;
+
+    return ((Number(block.data.gasUsed) / Number(block.data.gasLimit)) * 100).toFixed(2);
+  }, [block.data]);
+
+  const gasPercentageTarget = useMemo(() => {
+    if (block.data === undefined) return 0;
+
+    const gasTarget = Number(block.data.gasLimit) / 2;
+
+    return (((Number(block.data.gasUsed) - gasTarget) / gasTarget) * 100).toFixed(2);
+  }, [block.data]);
+
+  console.log(block);
 
   return (
     <main className="flex h-full w-screen flex-col bg-gray-100 px-5 sm:px-10">
@@ -64,6 +99,68 @@ const BlockDetail = () => {
                 </p>
               )}
             </div>
+          </CardItem>
+          <CardItem label="Transactions" tooltipContent="The number of transactions in the block">
+            <Tooltip content="Click to view transactions">
+              <Link to={`/txs/${id}`}>{block.data?.transactions.length} transactions</Link>
+            </Tooltip>
+          </CardItem>
+          <CardItem label="Withdrawals" tooltipContent="Number of withdrawals in the block">
+            <Tooltip content="Click to view withdrawals">
+              <Link to={`/txs-withdrawals/${id}`}>
+                {block.data?.withdrawals?.length} withdrawals
+              </Link>
+            </Tooltip>
+          </CardItem>
+          <span className="my-2 h-[0.1rem] w-full bg-stone-100"></span>
+          <CardItem
+            label="Fee Recipient"
+            tooltipContent="Address receiving fees from transactions in this block">
+            {block.data?.miner && (
+              <Tooltip content={block.data.miner} side="top">
+                <Link to={`/address/${block.data.miner}`}>{formatHash(block.data.miner)}</Link>
+              </Tooltip>
+            )}
+          </CardItem>
+          <CardItem
+            label="Block reward"
+            tooltipContent="For each block, the amount of fees collected from the successful transactions in that block">
+            <p className="text-stone-900">{blockReward} eth</p>
+          </CardItem>
+          <CardItem
+            label="Total difficulty"
+            tooltipContent="Total difficulty of the chain until this block">
+            <p className="text-stone-900">{Number(block.data?.difficulty)}</p>
+          </CardItem>
+          <CardItem
+            label="Size"
+            tooltipContent="The block size is actually determined by the block gas limit">
+            <p className="text-stone-900">
+              {Number(block.data?.size).toLocaleString('en-US', {
+                maximumFractionDigits: 2,
+              })}{' '}
+              bytes
+            </p>
+          </CardItem>
+          <span className="my-2 h-[0.1rem] w-full bg-stone-100"></span>
+          <CardItem
+            label="Gas used"
+            tooltipContent="Total difficulty of the chain until this block">
+            <p className="text-stone-900">
+              {Number(block.data?.gasUsed).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{' '}
+              ETH
+            </p>
+            <p className="ml-2 text-stone-900">({gasPercentage}%)</p>
+            <p
+              className={cn(
+                Number(gasPercentageTarget) < 0 ? 'text-destructive' : 'text-emerald-500',
+                'ml-2'
+              )}>
+              ({gasPercentageTarget}%)
+            </p>
           </CardItem>
         </article>
       </section>
