@@ -21,7 +21,7 @@ const TransactionItem = (props: TransaactionItemProps) => {
         </span>
         <p className="visible sm:hidden">TX#</p>
         <div className="flex items-center gap-2 sm:flex-col sm:items-start sm:gap-0">
-          <Link to={`/block/${hash}`} className="max-w-24 truncate">
+          <Link to={`/tx/${hash}`} className="max-w-24 truncate">
             {String(hash)}
           </Link>
           <Suspense fallback={'-'}>{blockHash && <TxTimestamp blockHash={blockHash} />}</Suspense>
