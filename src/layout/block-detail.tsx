@@ -4,6 +4,7 @@ import { CircleCheck, CircleDot, CircleHelp, Clock, ShieldCheck } from 'lucide-r
 import { PropsWithChildren, ReactNode, useMemo } from 'react';
 import { useParams } from 'react-router';
 import { getBlockQueryKey } from 'wagmi/query';
+import GasSemiArch from '~/components/gas-semi-arch';
 import { Badge } from '~/components/ui/badge';
 import Link from '~/components/ui/link';
 import { Tooltip } from '~/components/ui/tooltip';
@@ -161,6 +162,7 @@ const BlockDetail = () => {
               )}>
               ({gasPercentageTarget}%)
             </p>
+            <GasSemiArch />
           </CardItem>
         </article>
       </section>
